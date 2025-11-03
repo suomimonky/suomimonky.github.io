@@ -1,7 +1,18 @@
 "use strict";
 
 document.addEventListener("DOMContentLoaded", function() {
-  const winbutton = document.getElementById("win")
+  const winbutton = document.getElementById("win");
+  let wintext = document.getElementById("wintext");
+  let scoreCounter = 0;
+  if (wintext){
+    scoreCounter = JSON.parse(localStorage.getItem("scoreObj"));
+    console.log(scoreCounter*10);
+    let score = 100-(scoreCounter*10);
+      if (score<0){
+        score = 0;
+      }
+      wintext.textContent = "You win! Your score is: " +score+"/100";
+  }
   const homesection = document.getElementById("homesection");
   const startbtn = document.getElementById("start");
   let cardsIdsArray = [];
@@ -182,7 +193,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
  function fetchImage(){
   let page = Math.floor(Math.random()*100);
-  fetch("https://api.artic.edu/api/v1/artworks?page=" +page +"&limit=20")
+  fetch("https://api.artic.edu/api/v1/artworks?page=" +page +"&limit=50")
   .then(response => {
     if (!response.ok){
       throw new Error("Response not ok", {cause: response})
@@ -193,7 +204,7 @@ document.addEventListener("DOMContentLoaded", function() {
       console.log(data);
       let imageData = data.data
       //filter to avoid saving null image ids which messes everything up
-      .filter(artwork => artwork.image_id != null)
+      .filter(artwork => artwork.image_id != null && artwork.date_end!= null)
       //saving the needed fields into imageData
       .map(artwork => ({
         image_id: artwork.image_id,
@@ -251,17 +262,33 @@ document.addEventListener("DOMContentLoaded", function() {
     let cards = document.getElementsByClassName("cards");
     console.log(Array.from(cards).length);
     let cardsArray = Array.from(cards);
-    for (let i = 0; i<cards.length; i++){
-    let urlString = "url(https://www.artic.edu/iiif/2/" +imageData[i].image_id+"/full/843,/0/default.jpg)";
-    console.log(imageData[i]);
+    let currentCardDates=[];
+    let index = 0;
+    let isIndexOk = false;
+    let indexArr = []
+    for (let i = 0; i<cardsArray.length; i++){
+      // isIndexOk = false;
+      while (currentCardDates.includes(imageData[index].date_end)){
+        index++;
+      }
+      // else {
+      //   isIndexOk = true;
+      //   indexArr.push(index);
+      // }
+    let urlString = "url(https://www.artic.edu/iiif/2/" +imageData[index].image_id+"/full/843,/0/default.jpg)";
+    // console.log(imageData[i]);
     cardsArray[i].style.backgroundImage = urlString;
     cardsArray[i].style.backgroundSize = "100% auto";
-    cardsArray[i].textContent = imageData[i].title+"\n"+imageData[i].date_end;
-    cardsArray[i].id = imageData[i].id;
+    cardsArray[i].textContent = imageData[index].title+"\n"+imageData[index].date_end;
+    cardsArray[i].id = imageData[index].id;
+
+    currentCardDates.push(imageData[index].date_end);
+    cardsIdsArray.push(imageData[index]);
+    // indexArr.push(index);
+    index++;
     // console.log(cardsArray[i].id);
-    }
-    for (let i = 0 ; i<cards.length;i++){
-      cardsIdsArray.push(imageData[i]);
+    // for (let i = 0 ; i<indexArr.length;i++){
+      
     }
   }
 
@@ -271,7 +298,15 @@ document.addEventListener("DOMContentLoaded", function() {
   function scorePoints(){
     let isWin = compareArrays();
     if (isWin) {
+      localStorage.setItem("scoreObj", JSON.stringify(scoreCounter));
       window.location.href = "winpage.html";
+      console.log(isWin)
+      console.log(wintext.textContent);
+    }
+    else {
+      scoreCounter++;
+      let attemptDisplay = document.getElementById("attempt");
+      attemptDisplay.textContent = "Attempts: "+scoreCounter;
     }
   }
   function compareArrays(){
@@ -288,5 +323,5 @@ document.addEventListener("DOMContentLoaded", function() {
       }
     }
     return true;
-  }
-  })
+  }}
+  )
