@@ -1,0 +1,77 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    user-select: none;
+}
+#unsortedCards, #sortedCards{
+    display: flex;
+}
+#homesection {
+    display: flex;
+    flex-direction: row;
+}
+#submit{
+    margin-top: 2em;
+}
+#submitbutton {
+    display: flex;
+    height:2em;
+    width:3em;
+    margin: auto;
+    font-size: 1.3em;
+    padding-left: 2em;
+    padding-right: 2em;
+    justify-content: center;
+    align-items: center;
+}
+#start{
+    display: flex;
+    height: 3em;
+    width: 4em;
+    margin: auto;
+    margin-bottom: 2em;
+    font-size: 2em;
+    justify-content: center;
+    align-items: center;
+}
+.cards, .homecards {
+    white-space: pre-line;
+    color:aliceblue;
+    text-shadow: 1px 1px 0 black;
+    padding:2em;
+    border-radius: 0.5em;
+    border: black;
+    background-color: blueviolet;
+    margin: auto;
+    /* margin-left: 2em;
+    margin-right: 2em; */
+    height: 18em;
+    width: 14em;
+}
+.emptySlots {
+    padding:1em;
+    height: 20em;
+    width: 15em;
+    border-radius: 0.5em;
+    border: black;
+    background-color: aquamarine;
+    /* margin-left: 2em;
+    margin-right: 2em; */
+    margin: auto;
+}
+/* #card1, #card2, #card3, #card4, #card5, #card6{
+    position: absolute;
+} */
+h3 {
+    text-align: center;
+    margin: 1em;
+}
+button {
+    margin: auto;
+    display: flex;
+}
+.placeholderImage {
+    height: 50%
+}
+
