@@ -310,18 +310,24 @@ document.addEventListener("DOMContentLoaded", function() {
     }
   }
   function compareArrays(){
+    let isCorrect = true
     let submittedCards = document.getElementsByClassName("cards");
+    let submittedCardIds = Array.from(submittedCards).map(card => card.id);
     for (let i=0;i<submittedCards.length;i++){
+      if (submittedCardIds[i]!=cardsIdsArray[i]){
+        submittedCards[i].style.border = "3mm ridge red";
+        isCorrect = false;
+      }
+      else {
+        submittedCards[i].style.border = "3mm ridge green";
+      }
+    }
+     for (let i=0;i<submittedCards.length;i++){
       if (submittedCards[i].parentElement.id == "unsortedCards"){
-        return false;
+        submittedCards[i].style.border = "3mm ridge red";
+        isCorrect = false;
       }
     }
-    submittedCards = Array.from(submittedCards).map(card => card.id);
-    for (let i=0;i<submittedCards.length;i++){
-      if (submittedCards[i]!=cardsIdsArray[i]){
-        return false;
-      }
-    }
-    return true;
+    return isCorrect;
   }}
   )
