@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function() {
   let scoreCounter = 0;
   if (wintext){
     scoreCounter = JSON.parse(localStorage.getItem("scoreObj"));
-    console.log(scoreCounter*10);
+    // console.log(scoreCounter*10);
     let score = 100-(scoreCounter*10);
       if (score<0){
         score = 0;
@@ -73,14 +73,14 @@ document.addEventListener("DOMContentLoaded", function() {
       function mouseOverDrag(e){
         if(e.target.classList.contains("emptySlots")||e.target.classList.contains("cards")||e.target.id === "unsortedCards"){
           currentCardSlot = e.target;
-          console.log("mouse over " +currentCardSlot.id);
+          // console.log("mouse over " +currentCardSlot.id);
         }
       }
       //if mouse out of that card slot, set the cardslot var back to null
       function mouseOutDrag(e){
         if(e.target.classList.contains("emptySlots")||e.target.classList.contains("cards")||e.target.id === "unsortedCards"){
           currentCardSlot = null;
-          console.log("mouse out "+e.target.id);
+          // console.log("mouse out "+e.target.id);
         }
       }
       //if mouseup while mouseover a card slot, replace that card slot with the card, otherwise return to initial position
@@ -105,7 +105,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
   function checkMouseUp(card, currentCardSlot, parent, initialPos, sibling){  
     if (currentCardSlot!=null){
-      console.log("replacing");
+      // console.log("replacing");
       card.style.position = "";
       card.style.top = "";
       card.style.left = "";
@@ -146,7 +146,7 @@ document.addEventListener("DOMContentLoaded", function() {
       }
     }
     else{
-      console.log("no slot");
+      // console.log("no slot");
       card.style.position =initialPos;
     }
   } 
@@ -154,14 +154,14 @@ document.addEventListener("DOMContentLoaded", function() {
   function sortCardIds(){
     cardsIdsArray.sort((a,b)=> a.date_end - b.date_end);
     cardsIdsArray = cardsIdsArray.map(cardsIdsArray => cardsIdsArray.id);
-    console.log(cardsIdsArray);
+    // console.log(cardsIdsArray);
   }
 
   function createCard(idname, classname){
   for(let i = 0; i<6; i++){
     const newCard = document.createElement("section");
     newCard.setAttribute("id", idname + i);
-    console.log(newCard.id);
+    // console.log(newCard.id);
     newCard.classList.add(classname);
     if (idname === "card"){
       unsortedCards.appendChild(newCard);
@@ -201,7 +201,7 @@ document.addEventListener("DOMContentLoaded", function() {
     else 
       return response.json(); })
     .then(data=> {
-      console.log(data);
+      // console.log(data);
       let imageData = data.data
       //filter to avoid saving null image ids which messes everything up
       .filter(artwork => artwork.image_id != null && artwork.date_end!= null)
@@ -211,7 +211,7 @@ document.addEventListener("DOMContentLoaded", function() {
         title: artwork.title,
         date_end: artwork.date_end,
         id: artwork.id}));
-      console.log(imageData);
+      // console.log(imageData);
       setCardImages(imageData);
       sortCardIds(imageData);
       })
@@ -228,7 +228,7 @@ document.addEventListener("DOMContentLoaded", function() {
       else 
         return response.json(); })
     .then(data=> {
-      console.log(data);
+      // console.log(data);
       let imageData = data.data
       //filter to avoid saving null image ids which messes everything up
       .filter(artwork => artwork.image_id != null)
@@ -255,12 +255,12 @@ document.addEventListener("DOMContentLoaded", function() {
         let urlString = "url(https://www.artic.edu/iiif/2/" +imageData[i].image_id+"/full/843,/0/default.jpg)";
         homearray[i].style.backgroundImage = urlString;
         homearray[i].style.backgroundSize = "100% auto";
-        homearray[i].textContent = imageData[i].title+"\n"+imageData[i].date_end;
+        homearray[i].textContent = imageData[i].title;
       }
     }
     function setCardImages(imageData){
     let cards = document.getElementsByClassName("cards");
-    console.log(Array.from(cards).length);
+    // console.log(Array.from(cards).length);
     let cardsArray = Array.from(cards);
     let currentCardDates=[];
     let index = 0;
@@ -279,7 +279,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // console.log(imageData[i]);
     cardsArray[i].style.backgroundImage = urlString;
     cardsArray[i].style.backgroundSize = "100% auto";
-    cardsArray[i].textContent = imageData[index].title+"\n"+imageData[index].date_end;
+    cardsArray[i].textContent = imageData[index].title;
     cardsArray[i].id = imageData[index].id;
 
     currentCardDates.push(imageData[index].date_end);
@@ -300,8 +300,8 @@ document.addEventListener("DOMContentLoaded", function() {
     if (isWin) {
       localStorage.setItem("scoreObj", JSON.stringify(scoreCounter));
       window.location.href = "winpage.html";
-      console.log(isWin)
-      console.log(wintext.textContent);
+      // console.log(isWin)
+      // console.log(wintext.textContent);
     }
     else {
       scoreCounter++;
